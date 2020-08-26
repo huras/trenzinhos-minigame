@@ -3,6 +3,11 @@
 var currentPage = 0;
 var paginas = [
   {
+    url: './Animacoes/index.html',
+    rotation: "landscape-primary",
+    type: 'animation'
+  },
+  {
     url: "./G-Kart/index.html",
     rotation: "portrait-primary"
   }
