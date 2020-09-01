@@ -5,8 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#00A5ED" />
+  <link rel="stylesheet" href="HUD.css">
 
-  <title>Divisão por 2 - Kart</title>
+  <title>game</title>
   <style>
     body {
       height: 100vh;
@@ -36,6 +37,71 @@
 </head>
 
 <body>
+
+  <div class="interactableHUD">
+    <div class='result-screen ingame-screen' style='display: none;'>
+      <h1 style='margin: 4px; font-size: 32px;'> VOCÊ CONSEGUIU! </h1>
+      <h1 style='font-size: 48px; margin: 4px;'> PARABÉNS! </h1>
+      <h3 style='margin: 4px; margin-top: 18px; font-size: 36px;'> Nota: <span id='nota-final'>88%</span> </h3>
+
+      <button id='btn-repescar' style="display: flex; justify-content: center; align-items: center;"
+        class='retornar-btn btn-duploandar btn-laranjado tryagain-button'
+        onclick="loadNewScene('./G-Kart/index.html', 'landscape-primary', engine)">
+        <div style="font-size: 24px; padding: 4px;" class='dflex'>
+          <div> TENTAR NOVAMENTE (</div>
+          <div id='vezes-r'> 3 </div>
+          <div> VEZES RESTANTES) </div>
+        </div>
+      </button>
+
+      <button style='margin: 4px;' class='retornar-btn btn-verde'
+        onclick="loadNewScene('./Animacoes/index.html', 'landscape-primary')"> MENU
+      </button>
+    </div>
+
+    <div class='gameover-screen ingame-screen' style='display: none;'>
+      <h1 style='margin: 4px;'> FIM DE JOGO </h1>
+
+      <button style='margin: 4px;' class='retornar-btn btn-duploandar btn-laranjado continuar-button'
+        onclick="engine.tryToBuyRevive();">
+        <div> CONTINUAR </div>
+        <div class='dflex' style='margin-top: 10px'>
+          <small style='font-size: 22px'> 30 </small>
+          <img src="./img/CristalDaRiqueza.png" style='height: 25px; margin-left: 4px;'>
+        </div>
+      </button>
+
+      <button class='retornar-btn btn-duploandar btn-laranjado reset-button'
+        onclick="loadNewScene('./G-Kart/index.html', 'portrait-primary')">
+        <svg style='height: 32px; margin-bottom: 12px; animation: rodarZ 2.5s infinite ease-out;' aria-hidden="true"
+          focusable="false" data-prefix="fas" data-icon="redo-alt" class="svg-inline--fa fa-redo-alt fa-w-16" role="img"
+          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="currentColor"
+            d="M256.455 8c66.269.119 126.437 26.233 170.859 68.685l35.715-35.715C478.149 25.851 504 36.559 504 57.941V192c0 13.255-10.745 24-24 24H345.941c-21.382 0-32.09-25.851-16.971-40.971l41.75-41.75c-30.864-28.899-70.801-44.907-113.23-45.273-92.398-.798-170.283 73.977-169.484 169.442C88.764 348.009 162.184 424 256 424c41.127 0 79.997-14.678 110.629-41.556 4.743-4.161 11.906-3.908 16.368.553l39.662 39.662c4.872 4.872 4.631 12.815-.482 17.433C378.202 479.813 319.926 504 256 504 119.034 504 8.001 392.967 8 256.002 7.999 119.193 119.646 7.755 256.455 8z">
+          </path>
+        </svg>
+        <div> REINICIAR </div>
+      </button>
+
+      <button style='margin: 4px;' class='retornar-btn btn-vermelho'
+        onclick="loadNewScene('./G-Kart/index.html', 'landscape-primary')"> SAIR
+      </button>
+    </div>
+  </div>
+
+  <div class='noInteractionHUD'>
+    <div class='hearts'>
+      <img id='vida1' ordem='1' src="./img/Coracao.png">
+      <img id='vida2' ordem='2' src="./img/Coracao.png">
+      <img id='vida3' ordem='3' src="./img/Coracao.png">
+    </div>
+    <div class='moeda'>
+      <img id='crystal-icon' src="./img/CristalDaRiqueza.png" alt="" style='height: 26px; width: auto;'>
+      <span class='times'>x</span>
+      <span id='txt_qtd-moedas' class='qtd'>0</span>
+    </div>
+  </div>
+
   <audio preload="automatic" id="roncomotor">
     <source src="./audio/ronco-motor.mp3" type="audio/mp3" />
     Your browser does not support this audio type.
@@ -46,8 +112,9 @@
 
   <!-- Required Scripts -->
   <canvas id="canvas" width="1024" height="720"></canvas>
-  <script src="transpiled.js"></script>
-  <!-- <script src="kart.js"></script> -->
+  <!-- <script src="transpiled.js"></script> -->
+  <script src="bundle.js"></script>
+  <script src="kart.js"></script>
 </body>
 
 </html>
