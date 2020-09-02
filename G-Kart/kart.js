@@ -1301,16 +1301,111 @@ window.addEventListener("resize", () => {
   resizeCanvas();
 });
 
-var questions = [];
-for (var i = 1; i <= 10; i++) {
-  var newQuestion = {
-    question: '1 x ' + i + " =",
-    answer: i * 1,
-    options: i == 1 ? [1, 0, 2] : [(i - 1) * 1, i * 1, (i + 1) * 1],
-  };
-  newQuestion.options = shuffle(newQuestion.options);
-  questions.push(newQuestion);
-}
+var questions = [
+  {
+    question: '5 + 2 =',
+    answer: 7,
+    options: [8, 9],
+  },
+  {
+    question: '3 + 7 =',
+    answer: 10,
+    options: [6, 11],
+  },
+  {
+    question: '4 + 4 =',
+    answer: 8,
+    options: [9, 7],
+  },
+  {
+    question: '9 + 3 =',
+    answer: 12,
+    options: [11, 13],
+  },
+  {
+    question: '6 + 5 =',
+    answer: 11,
+    options: [12, 13],
+  },
+  {
+    question: '8 + 5 =',
+    answer: 13,
+    options: [12, 15],
+  },
+  {
+    question: '6 + 3 =',
+    answer: 9,
+    options: [8, 9],
+  },
+  {
+    question: '4 + 8 =',
+    answer: 12,
+    options: [11, 14],
+  },
+  {
+    question: '5 + 5 =',
+    answer: 10,
+    options: [9, 11],
+  },
+  {
+    question: '10 + 4 =',
+    answer: 14,
+    options: [13, 15],
+  },
+  {
+    question: '7 + 6 =',
+    answer: 13,
+    options: [14, 17],
+  },
+  {
+    question: '9 + 6 =',
+    answer: 15,
+    options: [17, 14],
+  },
+  {
+    question: '7 + 4 =',
+    answer: 11,
+    options: [10, 14],
+  },
+  {
+    question: '5 + 10 =',
+    answer: 15,
+    options: [12, 14],
+  },
+  {
+    question: '6 + 6 =',
+    answer: 12,
+    options: [11, 14],
+  },
+  {
+    question: '11 + 5 =',
+    answer: 16,
+    options: [17, 14],
+  },
+  {
+    question: '8 + 7 =',
+    answer: 15,
+    options: [11, 14],
+  },
+  {
+    question: '10 + 7 =',
+    answer: 17,
+    options: [16, 19],
+  },
+];
+// for (var i = 1; i <= 10; i++) {
+//   var newQuestion = {
+//     question: '1 x ' + i + " =",
+//     answer: i * 1,
+//     options: i == 1 ? [1, 0, 2] : [(i - 1) * 1, i * 1, (i + 1) * 1],
+//   };
+questions.map(opt => {
+  opt.options.push(opt.answer);
+  opt.options = shuffle(opt.options);
+})
+
+// questions.push(newQuestion);
+// }
 questions = shuffle(questions);
 questions = questions.slice(0, 6);
 const canvasContext = canvas.getContext("2d");
