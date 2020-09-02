@@ -1035,7 +1035,7 @@ class GameEngine {
     );
 
     this.ctx.fillText(
-      "O RESULTADO DA MULTIPLICAÇÂO.",
+      "O RESULTADO DA SOMA.",
       labelRect.x + labelRect.padding.x + 54,
       labelRect.y + labelRect.padding.y + fontSize * 2,
       canvas.width - labelRect.x
