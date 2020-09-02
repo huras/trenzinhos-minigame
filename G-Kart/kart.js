@@ -1303,94 +1303,94 @@ window.addEventListener("resize", () => {
 
 var questions = [
   {
-    question: '22 - 10 =',
+    question: '65 - 26 =',
+    answer: 39,
+    options: [37, 40],
+  },
+  {
+    question: '71 - 48 =',
+    answer: 23,
+    options: [21, 26],
+  },
+  {
+    question: '110 - 55 =',
+    answer: 55,
+    options: [53, 58],
+  },
+  {
+    question: '44 - 16 =',
+    answer: 28,
+    options: [24, 29],
+  },
+  {
+    question: '44 - 32 =',
     answer: 12,
-    options: [11, 14],
+    options: [15, 13],
   },
   {
-    question: '31 - 15 =',
-    answer: 16,
-    options: [15, 18],
-  },
-  {
-    question: '34 - 13 =',
-    answer: 21,
-    options: [20, 23],
-  },
-  {
-    question: '32 - 6 =',
-    answer: 26,
+    question: '57 - 21 =',
+    answer: 36,
     options: [22, 29],
   },
   {
-    question: '33 - 19 =',
-    answer: 14,
-    options: [15, 18],
+    question: '67 - 27 =',
+    answer: 40,
+    options: [39, 43],
   },
   {
-    question: '40 - 13 =',
-    answer: 27,
-    options: [22, 29],
+    question: '73 - 24 =',
+    answer: 49,
+    options: [47, 52],
   },
   {
-    question: '24 - 11 =',
-    answer: 13,
-    options: [10, 15],
+    question: '112 - 56 =',
+    answer: 56,
+    options: [51, 59],
   },
   {
-    question: '33 - 17 =',
-    answer: 16,
-    options: [15, 19],
-  },
-  {
-    question: '36 - 14 =',
-    answer: 22,
-    options: [20, 25],
-  },
-  {
-    question: '34 - 7 =',
-    answer: 27,
+    question: '46 - 17 =',
+    answer: 29,
     options: [23, 28],
   },
   {
-    question: '35 - 20 =',
-    answer: 15,
-    options: [17, 13],
-  },
-  {
-    question: '42 - 14 =',
-    answer: 28,
-    options: [26, 29],
-  },
-  {
-    question: '26 - 12 =',
-    answer: 14,
-    options: [11, 16],
-  },
-  {
-    question: '35 - 18 =',
-    answer: 17,
-    options: [19, 21],
-  },
-  {
-    question: '38 - 23 =',
-    answer: 15,
-    options: [13, 17],
-  },
-  {
-    question: '36 - 28 =',
-    answer: 8,
-    options: [5, 7],
-  },
-  {
-    question: '35 - 15 =',
-    answer: 20,
-    options: [18, 23],
-  },
-  {
-    question: '40 - 27 =',
+    question: '46 - 33 =',
     answer: 13,
-    options: [10, 15],
+    options: [17, 19],
+  },
+  {
+    question: '59 - 22 =',
+    answer: 37,
+    options: [35, 39],
+  },
+  {
+    question: '69 - 41 =',
+    answer: 28,
+    options: [24, 26],
+  },
+  {
+    question: '76 - 26 =',
+    answer: 50,
+    options: [47, 52],
+  },
+  {
+    question: '115 - 57 =',
+    answer: 58,
+    options: [53, 57],
+  },
+  {
+    question: '48 - 18 =',
+    answer: 30,
+    options: [27, 32],
+  },
+  {
+    question: '48 - 14 =',
+    answer: 34,
+    options: [31, 35],
+  },
+  {
+    question: '61 - 23 =',
+    answer: 38,
+    options: [34, 39],
   },
 ];
 // for (var i = 1; i <= 10; i++) {
