@@ -1335,7 +1335,7 @@ var questions = [
   {
     question: '6 + 3 =',
     answer: 9,
-    options: [8, 9],
+    options: [8, 10],
   },
   {
     question: '4 + 8 =',
