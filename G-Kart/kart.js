@@ -1450,8 +1450,15 @@ var questions = [
 //     options: i == 1 ? [1, 0, 2] : [(i - 1) * 1, i * 1, (i + 1) * 1],
 //   };
 questions.map(opt => {
-  opt.question = opt.param1 + " x " + opt.param2 + " =";
-  opt.answer = opt.param1 * opt.param2;
+  const tempParam1 = opt.param1;
+  const tempParam2 = opt.param2;
+
+  opt.param1 = tempParam1 * tempParam2;
+  opt.param2 = tempParam1;
+  opt.answer = tempParam2;
+
+  opt.question = opt.param1 + " ➗ " + opt.param2 + " =";
+  // opt.answer = tempParam1;
   opt.options = [];
   const num = randomInt(0, 12) % 3;
   if (num == 0) {
