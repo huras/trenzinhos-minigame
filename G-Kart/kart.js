@@ -773,8 +773,8 @@ class GameEngine {
     const showHitBoxes = false;
 
     //Set racers height
-    this.racerScale = canvas.width > 768 ? 0.7 : this.racerMobileScale;
-    var heights = [-0.3, 0, 0.4];
+    this.racerScale = this.layout != "mobile" ? 0.7 : this.racerMobileScale;
+    var heights = [-0.32, 0.08, 0.51];
     if (this.layout == "mobile") {
       heights = [-0.2, 0.1, 0.3];
     }
