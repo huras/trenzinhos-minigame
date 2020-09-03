@@ -1310,95 +1310,138 @@ window.addEventListener("resize", () => {
 
 var questions = [
   {
-    question: '5 + 2 =',
-    answer: 7,
-    options: [8, 9],
+    param1: 4,
+    param2: 8,
   },
   {
-    question: '3 + 7 =',
-    answer: 10,
-    options: [6, 11],
+    param1: 3,
+    param2: 7,
   },
   {
-    question: '4 + 4 =',
-    answer: 8,
-    options: [9, 7],
+    param1: 5,
+    param2: 2,
   },
   {
-    question: '9 + 3 =',
-    answer: 12,
-    options: [11, 13],
+    param1: 4,
+    param2: 3,
   },
   {
-    question: '6 + 5 =',
-    answer: 11,
-    options: [12, 13],
+    param1: 5,
+    param2: 3,
   },
   {
-    question: '8 + 5 =',
-    answer: 13,
-    options: [12, 15],
+    param1: 3,
+    param2: 9,
   },
   {
-    question: '6 + 3 =',
-    answer: 9,
-    options: [8, 9],
+    param1: 5,
+    param2: 9,
   },
   {
-    question: '4 + 8 =',
-    answer: 12,
-    options: [11, 14],
+    param1: 4,
+    param2: 8,
   },
   {
-    question: '5 + 5 =',
-    answer: 10,
-    options: [9, 11],
+    param1: 5,
+    param2: 4,
   },
   {
-    question: '10 + 4 =',
-    answer: 14,
-    options: [13, 15],
+    param1: 4,
+    param2: 6,
   },
   {
-    question: '7 + 6 =',
-    answer: 13,
-    options: [14, 17],
+    param1: 5,
+    param2: 7,
   },
   {
-    question: '9 + 6 =',
-    answer: 15,
-    options: [17, 14],
+    param1: 4,
+    param2: 9,
   },
   {
-    question: '7 + 4 =',
-    answer: 11,
-    options: [10, 14],
+    param1: 3,
+    param2: 8,
   },
   {
-    question: '5 + 10 =',
-    answer: 15,
-    options: [12, 14],
+    param1: 4,
+    param2: 2,
   },
   {
-    question: '6 + 6 =',
-    answer: 12,
-    options: [11, 14],
+    param1: 5,
+    param2: 8,
   },
   {
-    question: '11 + 5 =',
-    answer: 16,
-    options: [17, 14],
+    param1: 3,
+    param2: 6,
   },
   {
-    question: '8 + 7 =',
-    answer: 15,
-    options: [11, 14],
+    param1: 4,
+    param2: 4,
   },
   {
-    question: '10 + 7 =',
-    answer: 17,
-    options: [16, 19],
+    param1: 5,
+    param2: 6,
   },
+
+  // {
+  //   question: '6 + 3 =',
+  //   answer: 9,
+  //   options: [8, 9],
+  // },
+  // {
+  //   question: '4 + 8 =',
+  //   answer: 12,
+  //   options: [11, 14],
+  // },
+  // {
+  //   question: '5 + 5 =',
+  //   answer: 10,
+  //   options: [9, 11],
+  // },
+  // {
+  //   question: '10 + 4 =',
+  //   answer: 14,
+  //   options: [13, 15],
+  // },
+  // {
+  //   question: '7 + 6 =',
+  //   answer: 13,
+  //   options: [14, 17],
+  // },
+  // {
+  //   question: '9 + 6 =',
+  //   answer: 15,
+  //   options: [17, 14],
+  // },
+  // {
+  //   question: '7 + 4 =',
+  //   answer: 11,
+  //   options: [10, 14],
+  // },
+  // {
+  //   question: '5 + 10 =',
+  //   answer: 15,
+  //   options: [12, 14],
+  // },
+  // {
+  //   question: '6 + 6 =',
+  //   answer: 12,
+  //   options: [11, 14],
+  // },
+  // {
+  //   question: '11 + 5 =',
+  //   answer: 16,
+  //   options: [17, 14],
+  // },
+  // {
+  //   question: '8 + 7 =',
+  //   answer: 15,
+  //   options: [11, 14],
+  // },
+  // {
+  //   question: '10 + 7 =',
+  //   answer: 17,
+  //   options: [16, 19],
+  // },
 ];
 // for (var i = 1; i <= 10; i++) {
 //   var newQuestion = {
@@ -1407,6 +1450,21 @@ var questions = [
 //     options: i == 1 ? [1, 0, 2] : [(i - 1) * 1, i * 1, (i + 1) * 1],
 //   };
 questions.map(opt => {
+  opt.question = opt.param1 + " x " + opt.param2 + " =";
+  opt.answer = opt.param1 * opt.param2;
+  opt.options = [];
+  const num = randomInt(0, 12) % 3;
+  if (num == 0) {
+    opt.options.push(opt.answer - 1);
+    opt.options.push(opt.answer + 1);
+  } else if (num == 1) {
+    opt.options.push(opt.answer + 2);
+    opt.options.push(opt.answer + 1);
+  } else {
+    opt.options.push(opt.answer - 2);
+    opt.options.push(opt.answer - 1);
+  }
+
   opt.options.push(opt.answer);
   opt.options = shuffle(opt.options);
 })
