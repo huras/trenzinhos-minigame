@@ -1310,77 +1310,78 @@ window.addEventListener("resize", () => {
 
 var questions = [
   {
-    param1: 4,
-    param2: 8,
+    param1: 6,
+    param2: 6,
   },
   {
-    param1: 3,
-    param2: 7,
-  },
-  {
-    param1: 5,
-    param2: 2,
-  },
-  {
-    param1: 4,
-    param2: 3,
-  },
-  {
-    param1: 5,
-    param2: 3,
-  },
-  {
-    param1: 3,
-    param2: 9,
-  },
-  {
-    param1: 5,
-    param2: 9,
-  },
-  {
-    param1: 4,
-    param2: 8,
-  },
-  {
-    param1: 5,
+    param1: 8,
     param2: 4,
   },
   {
-    param1: 4,
-    param2: 6,
+    param1: 7,
+    param2: 3,
+  },
+  {
+    param1: 6,
+    param2: 8,
   },
   {
     param1: 5,
-    param2: 7,
-  },
-  {
-    param1: 4,
     param2: 9,
   },
   {
-    param1: 3,
-    param2: 8,
-  },
-  {
-    param1: 4,
+    param1: 7,
     param2: 2,
   },
   {
-    param1: 5,
-    param2: 8,
+    param1: 7,
+    param2: 7,
   },
   {
-    param1: 3,
-    param2: 6,
+    param1: 8,
+    param2: 7,
   },
   {
-    param1: 4,
+    param1: 8,
     param2: 4,
   },
   {
-    param1: 5,
+    param1: 7,
+    param2: 9,
+  },
+  {
+    param1: 6,
+    param2: 8,
+  },
+  {
+    param1: 8,
+    param2: 3,
+  },
+  {
+    param1: 8,
+    param2: 8,
+  },
+  {
+    param1: 7,
     param2: 6,
   },
+  {
+    param1: 7,
+    param2: 3,
+  },
+  {
+    param1: 8,
+    param2: 2,
+  },
+  {
+    param1: 7,
+    param2: 9,
+  },
+  {
+    param1: 6,
+    param2: 7,
+  },
+
 
   // {
   //   question: '6 + 3 =',
