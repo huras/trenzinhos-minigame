@@ -25,10 +25,6 @@ if (!window.requestAnimationFrame) {
   }());
 }
 
-function loadNewScene() {
-  alert("loadNewScene está vazio");
-}
-
 //External Methods
 function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
   if (typeof stroke === "undefined") {
@@ -104,6 +100,43 @@ function sound(src) {
   };
 }
 
+class SheetLoader {
+  constructor(onLoadAllCallBack = undefined) {
+    this.sheetsToLoad = [];
+    this.sheetsLoaded = 0;
+    this.loadAllCallBack = onLoadAllCallBack;
+    this.queue = [];
+  }
+
+  onLoadSheet() {
+    this.sheetsLoaded++;
+    if (this.sheetsLoaded >= this.queue.length) {
+      if (this.loadAllCallBack) {
+        this.loadAllCallBack();
+      }
+    }
+  }
+
+  queueSheet(filepath) {
+    const newSheet = new Image();
+    this.queue.push({ filepath: filepath, image: newSheet });
+    newSheet.src = filepath;
+    return newSheet;
+  }
+
+  loadSheetQueue(onLoadAllCallBack = undefined) {
+    if (onLoadAllCallBack) {
+      this.loadAllCallBack = onLoadAllCallBack;
+    }
+
+    this.queue.map((item) => {
+      item.image.addEventListener("load", () => {
+        this.onLoadSheet();
+      });
+    });
+  }
+}
+
 /* View in fullscreen */
 function openFullscreen(elem) {
   if (elem.requestFullscreen) {
@@ -130,7 +163,7 @@ function closeFullscreen() {
   }
 }
 
-
+let Physics = {};
 // POINT/RECTANGLE
 Physics.pointRect = function (point, rect) {
 
@@ -171,28 +204,6 @@ if (!window.requestAnimationFrame) {
   })();
 }
 
-var loadedData = undefined;
-function loadPreviousStageData(dados) {
-
-  if (engine) {
-    if (loadedData != undefined) {
-      if (loadedData.repescagens == undefined) {
-        engine.repescagens = 0;
-      } else {
-        engine.repescagens = loadedData.repescagens + 1;
-      }
-
-      var maxJogadas = 2
-      document.getElementById('vezes-r').innerHTML = (maxJogadas - engine.repescagens);
-      if (engine.repescagens >= maxJogadas) {
-        document.getElementById('btn-repescar').style.display = 'none';
-      }
-
-      console.log(engine.repescagens);
-    }
-  }
-}
-
 //==================================================================================================
 
 // Get canvas
@@ -211,32 +222,12 @@ const nuvem1 = sheetLoader.queueSheet("./img/nuvem1.png");
 const nuvem2 = sheetLoader.queueSheet("./img/nuvem2.png");
 const nuvem3 = sheetLoader.queueSheet("./img/nuvem3.png");
 const mountains = sheetLoader.queueSheet("./img/mountains.png");
-const kart1 = sheetLoader.queueSheet("./img/kart1.png");
-const kart2 = sheetLoader.queueSheet("./img/kart2.png");
-const kart3 = sheetLoader.queueSheet("./img/kart3.png");
-const trilho = sheetLoader.queueSheet("./img/trilho.png");
+const racer = sheetLoader.queueSheet("./img/kart-racer.png");
+const roadZebra = sheetLoader.queueSheet("./img/road-zebra.png");
+const roadLine = sheetLoader.queueSheet("./img/faixa.png");
 const ui_certo = sheetLoader.queueSheet("./img/ui_certo.png");
 const ui_errado = sheetLoader.queueSheet("./img/ui_errado.png");
 const megafone = sheetLoader.queueSheet("./img/bullhorn-solid.svg");
-
-const revivePrice = 30;
-const onGameOver = () => {
-
-  // engineLife++;
-
-  document.querySelector('.gameover-screen').style.display = 'flex'; //Exibe tela de gameover
-
-  // Checa se jogador tem dinheiro o suficiente para reviver
-
-  if (engine.crystalCounter.counter < revivePrice) {
-    document.querySelector(".continuar-button").style.display = 'none'
-  } else {
-    document.querySelector(".continuar-button").style.display = 'flex'
-  }
-
-  // sounds.sfx.nakaOST.play();
-  // this.engineSoundOn = false;
-}
 
 // ===================================== Coisas desse jogo em questão
 
@@ -260,24 +251,8 @@ function onFinishGame() {
 
 class GameEngine {
 
-
-
-  tryToBuyRevive = () => {
-    if (this.crystalCounter.counter >= revivePrice) {
-      this.crystalCounter.decrease(revivePrice);
-      this.onRevive();
-    }
-  }
-
-  onRevive = () => {
-    this.heartHUD.recoverDamage(3);
-    document.querySelector('.gameover-screen').style.display = 'none'; //Exibe tela de gameover    
-  }
-
-  // =====================================================
-
   constructor(inputQuestions, ctx, canvas) {
-    this.racerMobileScale = 0.5;
+    this.racerMobileScale = 0.45;
     this.originalWidth = 1024;
     this.originalHeight = 720;
     this.ctx = ctx;
@@ -351,12 +326,6 @@ class GameEngine {
             });
 
             if (respostaDoAluno == repostaCorreta) {
-              this.frag.incluirAcerto({
-                questionString: this.currentQuestion.question,
-                rightAnswer: repostaCorreta,
-                answerGiven: respostaDoAluno
-              });
-
               this.soundMotor.play();
               this.soundMotor.volume = 0.2;
               this.gameState = gameStates.RIGHT_ANSWER;
@@ -367,14 +336,6 @@ class GameEngine {
                 this.gameState = gameStates.LOAD_QUESTION;
               }, 5000);
             } else {
-              this.frag.incluirErro({
-                questionString: this.currentQuestion.question,
-                rightAnswer: repostaCorreta,
-                answerGiven: respostaDoAluno
-              });
-
-              this.heartHUD.applyDamage(1);
-              this.heartHUD.updateHUD();
               this.gameState = gameStates.WRONG_ANSWER;
 
               setTimeout(() => {
@@ -397,8 +358,7 @@ class GameEngine {
     window.requestAnimationFrame(() => {
       this.gameLoop();
     });
-    if (this.crystalCounter)
-      this.crystalCounter.updateHUD();
+
     switch (this.engineState) {
       case engineStates.START:
         {
@@ -442,8 +402,7 @@ class GameEngine {
 
                   this.gameState = gameStates.WAIT_ANSWER;
                 } else {
-                  // this.engineState = engineStates.RESULT;
-                  this.onWinGame();
+                  this.engineState = engineStates.RESULT;
                 }
               }
               break;
@@ -517,16 +476,12 @@ class GameEngine {
       position = {
         x: Math.random() * window.innerWidth * 1.25,
         y: Math.random() * 200,
-      },
-      imagem = undefined
+      }
     ) => {
       var novoRacer = {};
       novoRacer.valorBandeira = valorBandeira;
       novoRacer.position = position;
       novoRacer.size = { x: 351, y: 305 };
-
-      novoRacer.imagem = imagem;
-
       return novoRacer;
     };
 
@@ -536,51 +491,39 @@ class GameEngine {
       this.kartRacers.push(
         kartRacer(6, {
           x: -401,
-          y: canvas.height / 2 - 50,
-        },
-          kart1
-        )
+          y: this.getEstradaCoordinates(0.2),
+        })
       );
       this.kartRacers.push(
         kartRacer(66, {
           x: -351 + 125,
           y: this.getEstradaCoordinates(0.4),
-        },
-          kart2
-        )
+        })
       );
       this.kartRacers.push(
         kartRacer(999, {
           x: -201,
           y: this.getEstradaCoordinates(0.68),
-        },
-          kart3
-        )
+        })
       );
     } else {
       this.kartRacers.push(
         kartRacer(6, {
           x: -401,
-          y: canvas.height / 2 - 50,
-        },
-          kart1
-        )
+          y: this.getEstradaCoordinates(0.05),
+        })
       );
       this.kartRacers.push(
         kartRacer(66, {
           x: -351 + 125,
           y: this.getEstradaCoordinates(0.4),
-        },
-          kart2
-        )
+        })
       );
       this.kartRacers.push(
         kartRacer(999, {
           x: -201,
           y: this.getEstradaCoordinates(0.68),
-        },
-          kart3
-        )
+        })
       );
     }
   }
@@ -725,61 +668,62 @@ class GameEngine {
       this.pistaSpeed = 6;
     }
 
-    this.ctx.fillStyle = "rgb(129, 190, 57)";
+    this.ctx.fillStyle = "#3A3B3C";
     this.ctx.fillRect(0, canvas.height / 2, canvas.width, asfaltoHeight);
 
-    // Trilho
-    if (!this.trilho) {
-      this.trilho = {
-        img: trilho,
+    // Zebra Asfalto
+    if (!this.roadZebra) {
+      this.roadZebra = {
+        img: roadZebra,
         position: { x: 0, y: canvas.height / 2 },
-        size: { x: 2862, y: asfaltoHeight },
+        size: { x: 2048, y: 16 },
       };
     }
 
-    this.trilho.position.y = canvas.height / 2;
-
-    this.trilho.position.x -= this.pistaSpeed;
-    if (this.trilho.position.x < -200) {
-      this.trilho.position.x = 0;
+    this.roadZebra.position.x -= this.pistaSpeed;
+    if (this.roadZebra.position.x < -145) {
+      this.roadZebra.position.x = 0;
     }
 
     this.ctx.drawImage(
-      trilho,
+      roadZebra,
+      0,
+      0,
+      this.roadZebra.size.x,
+      this.roadZebra.size.y,
 
-      this.trilho.position.x,
+      this.roadZebra.position.x,
       canvas.height / 2,
-      this.trilho.size.x,
-      // this.trilho.size.y
-      canvas.height / 2
+      this.roadZebra.size.x,
+      this.roadZebra.size.y
     );
 
     // Faixa asfalto
-    // if (!this.roadLine) {
-    //   this.roadLine = {
-    //     img: roadLine,
-    //     position: { x: 0, y: canvas.height / 2 },
-    //     size: { x: 1919, y: 7 },
-    //   };
-    // }
+    if (!this.roadLine) {
+      this.roadLine = {
+        img: roadLine,
+        position: { x: 0, y: canvas.height / 2 },
+        size: { x: 1919, y: 7 },
+      };
+    }
 
-    //   this.roadLine.position.x -= this.pistaSpeed * 1.85;
-    //   if (this.roadLine.position.x < -125) {
-    //     this.roadLine.position.x = 0;
-    //   }
+    this.roadLine.position.x -= this.pistaSpeed * 1.85;
+    if (this.roadLine.position.x < -125) {
+      this.roadLine.position.x = 0;
+    }
 
-    //   this.ctx.drawImage(
-    //     roadLine,
-    //     0,
-    //     0,
-    //     this.roadLine.size.x,
-    //     this.roadLine.size.y,
+    this.ctx.drawImage(
+      roadLine,
+      0,
+      0,
+      this.roadLine.size.x,
+      this.roadLine.size.y,
 
-    //     this.roadLine.position.x,
-    //     canvas.height - (7 * canvas.height) / 24,
-    //     this.roadLine.size.x,
-    //     this.roadLine.size.y
-    //   );
+      this.roadLine.position.x,
+      canvas.height - (7 * canvas.height) / 24,
+      this.roadLine.size.x,
+      this.roadLine.size.y
+    );
   }
 
   renderJanelaFullscreen() {
@@ -826,14 +770,13 @@ class GameEngine {
   }
 
   renderRacers() {
-    // return;
     const showHitBoxes = false;
 
     //Set racers height
-    this.racerScale = canvas.width > 768 ? 0.7 : this.racerMobileScale;
+    this.racerScale = this.layout != "mobile" ? 0.7 : this.racerMobileScale;
     var heights = [-0.32, 0.08, 0.51];
     if (this.layout == "mobile") {
-      heights = [-0.26, 0.14, 0.53];
+      heights = [-0.2, 0.1, 0.3];
     }
 
     if (
@@ -903,7 +846,7 @@ class GameEngine {
     this.kartRacers.map((item) => {
       this.racerScale = canvas.width > 768 ? 0.7 : this.racerMobileScale;
       this.ctx.drawImage(
-        item.imagem,
+        racer,
         0,
         0,
         item.size.x,
@@ -929,20 +872,15 @@ class GameEngine {
   renderRacerFlags(question) {
     var questionOptinIndex = 0;
     this.kartRacers.map((item, index) => {
-      var anulator = (index >= 2 ? 0.5 : 1);
       item.valorBandeira = question.options[index].toString();
       this.ctx.font = "bold 24px sans-serif";
       this.ctx.fillStyle = "#000000";
       this.ctx.fillText(
         item.valorBandeira,
-
         item.position.x +
-        45 * this.racerScale -
+        165 * this.racerScale -
         (item.valorBandeira.toString().length - 1) * 8,
-
-        item.position.y -
-        (57 - item.size.y / 2) * this.racerScale - index * 5 * anulator,
-
+        item.position.y - (100 - item.size.y / 2) * this.racerScale,
         140
       );
     });
@@ -1035,7 +973,7 @@ class GameEngine {
     );
 
     this.ctx.fillText(
-      "O RESULTADO DA ADIÇÃO.",
+      "O RESULTADO DA MULTIPLICAÇÂO.",
       labelRect.x + labelRect.padding.x + 54,
       labelRect.y + labelRect.padding.y + fontSize * 2,
       canvas.width - labelRect.x
@@ -1276,7 +1214,7 @@ class GameEngine {
 
 class ImagemObject {
   constructor() {
-    this.img = trilho;
+    this.img = roadZebra;
     this.position = { x: 0, y: canvas.height / 2 };
     this.size = { x: 2048, y: 16 };
     this.speed = 3;
@@ -1301,130 +1239,20 @@ window.addEventListener("resize", () => {
   resizeCanvas();
 });
 
-var questions = [
-  {
-    question: '5 + 2 =',
-    answer: 7,
-    options: [8, 9],
-  },
-  {
-    question: '3 + 7 =',
-    answer: 10,
-    options: [6, 11],
-  },
-  {
-    question: '4 + 4 =',
-    answer: 8,
-    options: [9, 7],
-  },
-  {
-    question: '9 + 3 =',
-    answer: 12,
-    options: [11, 13],
-  },
-  {
-    question: '6 + 5 =',
-    answer: 11,
-    options: [12, 13],
-  },
-  {
-    question: '8 + 5 =',
-    answer: 13,
-    options: [12, 15],
-  },
-  {
-    question: '6 + 3 =',
-    answer: 9,
-    options: [8, 9],
-  },
-  {
-    question: '4 + 8 =',
-    answer: 12,
-    options: [11, 14],
-  },
-  {
-    question: '5 + 5 =',
-    answer: 10,
-    options: [9, 11],
-  },
-  {
-    question: '10 + 4 =',
-    answer: 14,
-    options: [13, 15],
-  },
-  {
-    question: '7 + 6 =',
-    answer: 13,
-    options: [14, 17],
-  },
-  {
-    question: '9 + 6 =',
-    answer: 15,
-    options: [17, 14],
-  },
-  {
-    question: '7 + 4 =',
-    answer: 11,
-    options: [10, 14],
-  },
-  {
-    question: '5 + 10 =',
-    answer: 15,
-    options: [12, 14],
-  },
-  {
-    question: '6 + 6 =',
-    answer: 12,
-    options: [11, 14],
-  },
-  {
-    question: '11 + 5 =',
-    answer: 16,
-    options: [17, 14],
-  },
-  {
-    question: '8 + 7 =',
-    answer: 15,
-    options: [11, 14],
-  },
-  {
-    question: '10 + 7 =',
-    answer: 17,
-    options: [16, 19],
-  },
-];
-// for (var i = 1; i <= 10; i++) {
-//   var newQuestion = {
-//     question: '1 x ' + i + " =",
-//     answer: i * 1,
-//     options: i == 1 ? [1, 0, 2] : [(i - 1) * 1, i * 1, (i + 1) * 1],
-//   };
-questions.map(opt => {
-  opt.options.push(opt.answer);
-  opt.options = shuffle(opt.options);
-})
-
-// questions.push(newQuestion);
-// }
+var questions = [];
+for (var i = 1; i <= 10; i++) {
+  var newQuestion = {
+    question: '1 x ' + i + " =",
+    answer: i * 1,
+    options: i == 1 ? [1, 0, 2] : [(i - 1) * 1, i * 1, (i + 1) * 1],
+  };
+  newQuestion.options = shuffle(newQuestion.options);
+  questions.push(newQuestion);
+}
 questions = shuffle(questions);
 questions = questions.slice(0, 6);
 const canvasContext = canvas.getContext("2d");
 var engine = new GameEngine(questions, canvasContext, canvas);
-engine.crystalCounter = new HUDCounter(60, 'txt_qtd-moedas');
-engine.heartHUD = new HeartHUD(3, ['#vida1', '#vida2', '#vida3'], args => { onGameOver() }, 3); // this.heartHUD = new HeartHUD(3, ['#vida1', '#vida2', '#vida3']);
-engine.frag = new FragManager();
-
-engine.onWinGame = () => {
-  document.querySelector('.result-screen').style.display = 'flex'; //Exibe a tela de resultado
-
-  // var percentage = (this.acertosHUD.slots.length + this.heartHUD.hearts) / (this.acertosHUD.slots.length + this.heartHUD.maxHearts)
-  var percentage = engine.frag.getPercentage();
-  document.querySelector('#nota-final').innerHTML = percentage.toFixed(0) + '%';
-
-  console.log("You're a win!");
-
-}
-
 sheetLoader.loadSheetQueue(() => {
   engine.start();
 });

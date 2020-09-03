@@ -78,7 +78,7 @@
       bottom: 16px;
       right: 16px;
       animation: pulse2 2s infinite ease-in-out;
-      display: none;
+      /* display: none; */
     }
 
     @keyframes pulse2 {
@@ -108,14 +108,14 @@
     <div class='texto'> Iniciar</div>
   </div>
 
-  <div id='nextPage' onclick="loadNewScene('./G-Kart/index.html', 'landscape-primary')">
+  <div id='nextPage' onclick="loadNewScene('./G-Kart/index.html', 'portrait-primary')">
     <img src="./img/nav-button.png">
   </div>
 
   <canvas id='canvas'> </canvas>
-
   <script src="animationPlayer_trans.js"> </script>
   <script src="introduction_trans.js"> </script>
+  <!-- <script src="introduction.js"> </script> -->
 </body>
 
 </html>
