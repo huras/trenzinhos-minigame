@@ -1458,7 +1458,7 @@ questions.map(opt => {
   opt.param2 = tempParam1;
   opt.answer = tempParam2;
 
-  opt.question = opt.param1 + " ➗ " + opt.param2 + " =";
+  opt.question = opt.param1 + " ÷ " + opt.param2 + " =";
   // opt.answer = tempParam1;
   opt.options = [];
   const num = randomInt(0, 12) % 3;
