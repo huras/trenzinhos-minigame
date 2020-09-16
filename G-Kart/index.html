@@ -71,10 +71,16 @@
           class="retornar-btn btn-duploandar btn-laranjado tryagain-button"
           onclick="loadNewScene('./G-Kart/index.html', 'portrait-primary', engine)"
         >
-          <div style="font-size: 24px; padding: 4px" class="dflex">
-            <div>TENTAR NOVAMENTE (</div>
-            <div id="vezes-r">3</div>
-            <div>VEZES RESTANTES)</div>
+          <div
+            style="font-size: 24px; padding: 4px; flex-direction: column"
+            class="dflex"
+          >
+            <div>TENTAR NOVAMENTE</div>
+            <div class="dflex">
+              (
+              <div id="vezes-r">3</div>
+              VEZES RESTANTES)
+            </div>
           </div>
         </button>
 
