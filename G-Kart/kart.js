@@ -25,6 +25,10 @@ if (!window.requestAnimationFrame) {
   }());
 }
 
+function somEnunciado() {
+  engine.playEnunciadoAudio(0);
+}
+
 function loadNewScene() {
   alert("loadNewScene está vazio");
 }
@@ -307,6 +311,7 @@ class GameEngine {
   }
 
   clickCanvas(event) {
+
     this.racerScale = this.layout == "desktop" ? 0.7 : this.racerMobileScale;
     var x = event.pageX - canvas.offsetLeft,
       y = event.pageY - canvas.offsetTop;
@@ -388,7 +393,7 @@ class GameEngine {
       }
     }
 
-    this.checkEnunciadoBtnClick(x, y);
+    // this.checkEnunciadoBtnClick(x, y);
   }
 
   gameLoop() {
@@ -988,6 +993,7 @@ class GameEngine {
   }
 
   renderQuestionLabel2() {
+    return;
     //Set sizes
     var fontSize = 17;
     var labelRect = {
@@ -1125,6 +1131,7 @@ class GameEngine {
     this.ctx.restore();
   }
   checkEnunciadoBtnClick(x, y) {
+    console.log('sdfjosd');
     if (Physics.pointCircle({ x: x, y: y }, this.enunciadoBtn.circle)) {
       this.playEnunciadoAudio(0);
     }
